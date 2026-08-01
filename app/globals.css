@@ -1,13 +1,50 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --neura-bg: #07090f;
+  --neura-surface: #0e1320;
+  --neura-elevated: #161c2a;
+  --neura-glass: rgba(255, 255, 255, 0.05);
+  --neura-border: rgba(255, 255, 255, 0.1);
+  --neura-accent: #6366f1;
+  --neura-accent-2: #a855f7;
+  --neura-focus: #10b981;
+  --neura-stress: #ef4444;
+  --neura-calm: #3b82f6;
+  --neura-cog: #f59e0b;
+  --neura-text: #eceef3;
+  --neura-muted: rgba(255, 255, 255, 0.65);
+  --neura-dim: rgba(255, 255, 255, 0.4);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--neura-bg);
+  color: var(--neura-text);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
 @media print {
-  .no-print { display: none !important; }
-  body { background: white !important; }
-  .bg-gray-50 { background: white !important; }
-  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  section { break-inside: avoid; }
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: #0f172a !important;
+  }
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  section {
+    break-inside: avoid;
+  }
 }

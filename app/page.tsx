@@ -1,11 +1,16 @@
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 flex items-center justify-center">
-      <div className="text-center px-6">
-        <div className="text-5xl mb-6">🧠</div>
-        <h1 className="text-2xl font-bold text-gray-800 mb-3">LinkBand</h1>
-        <p className="text-gray-500 text-base">
-          Brain performance reports, powered by real-time EEG.
+    <div className="min-h-screen bg-neura-bg flex items-center justify-center">
+      <div className="text-center px-6 max-w-md">
+        <p className="text-neura-accent text-xs font-bold uppercase tracking-[3px] mb-4">
+          Neura
+        </p>
+        <h1 className="text-3xl font-bold text-white mb-3 tracking-tight">
+          Brain Performance Reports
+        </h1>
+        <p className="text-white/45 text-base leading-relaxed">
+          Open a report link from your Neura session to view your personalized
+          EEG analysis.
         </p>
       </div>
     </div>
