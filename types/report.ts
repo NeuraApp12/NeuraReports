@@ -26,6 +26,8 @@ export interface SessionReport {
   final_cognitive_load: number;
   final_brain_balance: number;
   audio_path?: string | null;
+  hasAudio?: boolean;
+  previous_sessions?: PreviousSession[];
   timeline: TimelinePoint[];
   created_at: string;
 }

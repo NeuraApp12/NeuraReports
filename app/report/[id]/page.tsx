@@ -1,7 +1,7 @@
-import { supabase } from '@/lib/supabase';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { SessionReport, PreviousSession } from '@/types/report';
+import type { PreviousSession } from '@/types/report';
+import { fetchPublicReport, publicVoiceUrl } from '@/lib/neura';
 import ReportClient from './ReportClient';
 
 export const dynamic = 'force-dynamic';
@@ -11,12 +11,7 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const { data: report } = await supabase
-    .from('session_reports')
-    .select('session_name, first_name, last_name')
-    .eq('id', params.id)
-    .single();
-
+  const report = await fetchPublicReport(params.id);
   if (!report) return { title: 'Report Not Found — LinkBand' };
 
   return {
@@ -30,39 +25,16 @@ export default async function ReportPage({
 }: {
   params: { id: string };
 }) {
-  const { data: report, error } = await supabase
-    .from('session_reports')
-    .select('*')
-    .eq('id', params.id)
-    .single();
+  const report = await fetchPublicReport(params.id);
+  if (!report) notFound();
 
-  if (error || !report) notFound();
-
-  const { data: previousSessions } = await supabase
-    .from('session_reports')
-    .select(
-      'id, session_name, created_at, final_focus, final_stress, final_calm, duration_seconds'
-    )
-    .eq('email', report.email)
-    .neq('id', params.id)
-    .order('created_at', { ascending: false })
-    .limit(5);
-
-  // Generate a short-lived signed URL for the private audio file.
-  // The path stored in audio_path is never a public URL — access is only
-  // granted here, per report load, and expires after 1 hour.
-  let audioUrl: string | null = null;
-  if (report.audio_path) {
-    const { data: signed } = await supabase.storage
-      .from('session-audio')
-      .createSignedUrl(report.audio_path, 60 * 60); // 1-hour expiry
-    audioUrl = signed?.signedUrl ?? null;
-  }
+  const previousSessions = (report.previous_sessions ?? []) as PreviousSession[];
+  const audioUrl = publicVoiceUrl(params.id, report);
 
   return (
     <ReportClient
-      report={report as SessionReport}
-      previousSessions={(previousSessions as PreviousSession[]) ?? []}
+      report={report}
+      previousSessions={previousSessions}
       audioUrl={audioUrl}
     />
   );
